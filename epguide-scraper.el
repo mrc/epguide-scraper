@@ -14,9 +14,9 @@
   (let ((parsed (mapcar 'csv->list csv-rows)))
     (cdr parsed)))
 
-(defun episode-number    (ep) (nth 0 ep))
-(defun episode-season    (ep) (nth 1 ep))
-(defun episode-in-series (ep) (nth 2 ep))
+(defun episode-number    (ep) (string-to-number (nth 0 ep)))
+(defun episode-season    (ep) (string-to-number (nth 1 ep)))
+(defun episode-in-season (ep) (string-to-number (nth 2 ep)))
 (defun episode-airdate   (ep)
   "Convert epguides.com time (like 14/Mar/79) to ISO date (1979-03-14)."
   (let* ((airdate-string (nth 4 ep))
@@ -26,3 +26,31 @@
     (format-time-string "%Y-%m-%d" encoded-time)))
 (defun episode-title     (ep) (nth 5 ep))
 (defun episode-special-p (ep) (string-equal (nth 6 ep) "y"))
+
+(defun episode-to-agenda (ep)
+  (format "** TODO %-3d %2d-%02d   <%s -0700>  %s"
+          (episode-number ep)
+          (episode-season ep)
+          (episode-in-season ep)
+          (episode-airdate ep)
+          (episode-title ep)))
+
+(defun convert-guide-to-org-agenda (guide)
+  "Convert a list of episodes to a list of org-agenda lines."
+  (mapcar 'episode-to-agenda guide))
+
+(defun extract (content)
+  (mapconcat 'identity
+             (convert-guide-to-org-agenda
+              (parse-guide
+               (extract-csv-rows-from-epguide-html
+                content)))
+             "\n"))
+
+(defun retrieve-agenda-from-epguide-show (show-number)
+  (save-current-buffer
+    (with-current-buffer
+     (url-retrieve-synchronously
+      (format "http://epguides.com/common/exportToCSV.asp?rage=%d"
+              show-number))
+     (extract (buffer-string)))))
