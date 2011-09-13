@@ -2,12 +2,11 @@
 (require 'parse-csv)
 
 (defun extract-csv-rows-from-epguide-html (content)
-  "CSV rows are contained within the sole <textarea> on the page."
+  "CSV rows are contained within the sole <pre> on the page."
   (let* ((splitted (split-string content "\n" t))
-         (begin (position-if (lambda (s) (string-match "^<textarea" s)) splitted))
-         (end (position-if (lambda (s) (string-match "</textarea>" s)) splitted)))
+         (begin (position-if (lambda (s) (string-match "^<pre" s)) splitted))
+         (end (position-if (lambda (s) (string-match "</pre>" s)) splitted)))
     (subseq splitted (+ 1 begin) end)))
-
 
 (defun parse-guide (csv-rows)
   "Extract a list of episodes from CSV data."

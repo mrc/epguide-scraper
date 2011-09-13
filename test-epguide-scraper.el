@@ -1,13 +1,13 @@
 (require 'ert)
 
 (defvar *fawlty-towers*
-"
+  "
 <html>
 <head>
 <title>list output</title>
 </head>
-<body onload=\"list.select();\">
-<textarea id=\"list\" rows=\"30\" cols=\"70\">
+<body>
+<pre>
 number,season,episode,production code,airdate,title,special?
 1,1,1,\"\",19/Sep/75,\"A Touch of Class\",n
 2,1,2,\"\",26/Sep/75,\"The Builders\",n
@@ -21,7 +21,7 @@ number,season,episode,production code,airdate,title,special?
 10,2,4,\"\",12/Mar/79,\"The Kipper and the Corpse (a.k.a. Death)\",n
 11,2,5,\"\",26/Mar/79,\"The Anniversary\",n
 12,2,6,\"\",25/Oct/79,\"Basil the Rat (a.k.a. Rats)\",n
-</textarea>
+</pre>
 </body>
 </html>
 ")
