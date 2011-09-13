@@ -60,3 +60,10 @@ number,season,episode,production code,airdate,title,special?
     (are
      (= 12 (length agenda))
      (string-equal ep9 "** TODO 9    2-03   <1979-03-05 -0700>  Waldorf Salad"))))
+
+(ert-deftest cope-with-screwy-airdate ()
+  "For any parse errors on the airdate, just use nil."
+  (let ((screwy-airdate-row '("147" "8" "21" "7ACX10" "UNAIRED" "Partial Terms of Endearment" "n")))
+    (should-error (episode-airdate screwy-airdate-row)
+                  :type 'error-converting-date)
+    (should (null (episode-airdate-or-nil screwy-airdate-row)))))
