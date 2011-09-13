@@ -1,0 +1,24 @@
+* Use
+#+begin_src elisp
+  (load-file "epguide-scraper.el")
+  (retrieve-agenda-from-epguide-show 11215)
+#+end_src
+
+* Test
+#+begin_src elisp
+  (load-file "test-epguide-scraper.el")
+  (ert-run-tests-interactively)
+#+end_src
+
+* In org mode
+1. Add to an org agenda file
+   #+begin_src org
+  ,* 30 Rock                                                           :30rock:
+  ,#+begin_src elisp
+  ,(retrieve-agenda-from-epguide-show 11215)
+  ,#+end_src
+   #+end_src
+2. Eval org agenda file
+   #+begin_src elisp
+     (org-babel-execute-buffer)
+   #+end_src
