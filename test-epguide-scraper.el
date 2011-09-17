@@ -1,4 +1,5 @@
 (require 'ert)
+(require 'ert-extras)
 
 (defvar *fawlty-towers*
   "
@@ -25,13 +26,6 @@ number,season,episode,production code,airdate,title,special?
 </body>
 </html>
 ")
-
-(defmacro are (test &rest tests)
-  "Evaluate a list of tests with should"
-  `(progn
-     (should ,test)
-     (unless (null ',tests)
-       (are ,@tests))))
 
 (ert-deftest extract-csv-rows-from-epguide-html ()
   "Pull just the CSV rows from epguide csv results page."
