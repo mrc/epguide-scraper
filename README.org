@@ -12,12 +12,12 @@
 
 * In org mode
 1. Add to an org agenda file
-   #+BEGIN_SRC org
-  ,* 30 Rock                                                           :30rock:
-  ,#+begin_src elisp
-  ,(retrieve-agenda-from-epguide-show 11215)
-  ,#+end_src
-   #+END_SRC
+   #+BEGIN_EXAMPLE
+    * 30 Rock                                                           :30rock:
+    #+begin_src elisp
+    (retrieve-agenda-from-epguide-show 11215)
+    #+end_src
+  #+END_EXAMPLE
 2. Eval org agenda file
    #+BEGIN_SRC elisp
      (org-babel-execute-buffer)
