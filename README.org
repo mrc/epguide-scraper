@@ -1,24 +1,24 @@
 * Use
-#+begin_src elisp
+#+BEGIN_SRC elisp
   (load-file "epguide-scraper.el")
   (retrieve-agenda-from-epguide-show 11215)
-#+end_src
+#+END_SRC
 
 * Test
-#+begin_src elisp
+#+BEGIN_SRC elisp
   (load-file "test-epguide-scraper.el")
   (ert-run-tests-interactively)
-#+end_src
+#+END_SRC
 
 * In org mode
 1. Add to an org agenda file
-   #+begin_src org
+   #+BEGIN_SRC org
   ,* 30 Rock                                                           :30rock:
   ,#+begin_src elisp
   ,(retrieve-agenda-from-epguide-show 11215)
   ,#+end_src
-   #+end_src
+   #+END_SRC
 2. Eval org agenda file
-   #+begin_src elisp
+   #+BEGIN_SRC elisp
      (org-babel-execute-buffer)
-   #+end_src
+   #+END_SRC
