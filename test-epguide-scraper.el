@@ -43,6 +43,7 @@ number,season,episode,production code,airdate,title,special?
      (= (episode-season ep9) 2)
      (= (episode-in-season ep9) 3)
      (string-equal (episode-airdate ep9) "1979-03-05")
+     (equal (episode-airdate-as-decoded-time ep9 nil) (encode-time 0 0 0 5 3 1979))
      (string-equal (episode-title ep9) "Waldorf Salad")
      (not (episode-special-p ep9)))))
 
@@ -61,3 +62,24 @@ number,season,episode,production code,airdate,title,special?
     (should-error (episode-airdate screwy-airdate-row)
                   :type 'error-converting-date)
     (should (null (episode-airdate-or-nil screwy-airdate-row)))))
+
+(ert-deftest identify-early-episodes ()
+  (let* ((04-mar-79 (encode-time 0 0 0 4 3 1979))
+         (05-mar-79 (encode-time 0 0 0 5 3 1979))
+         (06-mar-79 (encode-time 0 0 0 6 3 1979))
+         (ep-date 05-mar-79))
+    (are
+     (is-date-before ep-date 06-mar-79)
+     (not (is-date-before ep-date 05-mar-79))
+     (not (is-date-before ep-date 04-mar-79))
+     (is-date-before '(4 4) '(5 5))
+     (is-date-before '(4 6) '(5 5)))))
+
+(ert-deftest reject-early-episodes ()
+  (let* ((04-mar-79 (encode-time 0 0 0 4 3 1979))
+         (epguide-reject-date 04-mar-79)
+         (rows (extract-csv-rows-from-epguide-html *fawlty-towers*))
+         (guide (parse-guide rows)))
+    (are
+     (= 4 (length guide))
+     (equal '(9 10 11 12) (mapcar 'episode-number guide)))))
